@@ -1,0 +1,66 @@
+---
+sidebar_position: 4
+id: delete
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Delete
+
+A função delete permite executar uma instrução DELETE e retornar um objeto contendo o status da operação, uma mensagem e alguns detalhes.
+
+A função não aceita nenhum tipo.
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+
+const delete = await odbc.delete({
+  table: "usuarios",
+  where: "nome = 'José Ninguém'",
+});
+
+console.log(delete);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: DELETE FROM usuarios WHERE nome = 'José Ninguém';",
+  details: "1  row(s) affected",
+}
+*/
+```
+
+## Parâmetros
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+O nome da tabela a ser consultada.
+
+| Type   |
+| ------ |
+| string |
+
+### where
+
+Uma string que representa a cláusula WHERE.
+
+| Type   |
+| ------ |
+| string |
+
+:::warning[Cuidado]
+Deletar sem uma cláusula <HighlightKey>WHERE</HighlightKey> afetará **TODOS** os registros na tabela.
+:::

@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Client": {
+    "message": "Client",
+    "description": "The label for category Client in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.DML": {
+    "message": "DML",
+    "description": "The label for category DML in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.DML.link.generated-index.description": {
+    "message": "A biblioteca possui algumas funções para manipulação de dados. Caso deseje executar uma consulta mais complexa, utilize a função query.",
+    "description": "The generated-index page description for category DML in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Aggregate Functions": {
+    "message": "Funções Agregadas",
+    "description": "The label for category Aggregate Functions in sidebar tutorialSidebar"
+  }
+}

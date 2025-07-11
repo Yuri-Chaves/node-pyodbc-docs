@@ -1,0 +1,103 @@
+import DocCardList from "@theme/DocCardList";
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+  KeyOfKey,
+  ArrayKey,
+} from "@site/src/components/Tags";
+
+# Aggregate Functions
+
+An aggregate function is a function that performs a calculation on a set of values, and returns a single value.
+
+## Parameters
+
+### <RequiredIndicator>fn</RequiredIndicator>
+
+Aggregate function to be executed.
+
+| Type                              |
+| --------------------------------- |
+| MIN \| MAX \| COUNT \| SUM \| AVG |
+
+### <RequiredIndicator>column</RequiredIndicator>
+
+Column where the function will be executed.
+
+| Type                                     |
+| ---------------------------------------- |
+| string \| <KeyOfKey>T</KeyOfKey> \| '\*' |
+
+:::info[Select all columns]
+`'*'` works only in <HighlightKey>COUNT</HighlightKey> function
+:::
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+Table name where the function will be executed.
+
+| Type   |
+| ------ |
+| string |
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### groupBy
+
+Group the result-set by one or more columns.
+
+| Type                                                  |
+| ----------------------------------------------------- |
+| <ArrayKey>string \| <KeyOfKey>T</KeyOfKey></ArrayKey> |
+
+### alias
+
+Used to give the result-set column a temporary name.
+
+| Type   |
+| ------ |
+| string |
+
+### distinct
+
+A boolean value that indicates whether the result-set should contain only unique values.
+
+| Type    | Default |
+| ------- | ------- |
+| boolean | false   |
+
+:::info[DISTINCT]
+Clause `DISTINCT` is only available in <HighlightKey>COUNT</HighlightKey> function
+:::
+
+### expression
+
+You can manipulate the values using expression.
+
+| Type   |
+| ------ |
+| string |
+
+:::info[Expression]
+Clause `expression` is only available in <HighlightKey>SUM</HighlightKey> function
+:::
+
+### where
+
+A string that represents the WHERE clause.
+
+| Type   |
+| ------ |
+| string |
+
+## Examples
+
+<DocCardList />

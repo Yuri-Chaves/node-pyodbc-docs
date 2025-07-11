@@ -1,0 +1,48 @@
+---
+sidebar_position: 3
+id: count
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# COUNT
+
+Retorna a quantidade de linhas em um conjunto de resultados.
+
+```ts
+import { odbc } from "./odbc";
+import { TUsuarios } from "./types";
+
+const count = await odbc.aggregate<TUsuarios, Array<TUsuarios>>({
+  fn: "COUNT",
+  column: "*",
+  table: "usuarios",
+  distinct: true,
+});
+
+console.log(count);
+/*
+{
+  id: 1,
+  nome: "Yuri Chaves",
+  email: "yuri.chaves39@hotmail.com",
+  idade: 29
+},
+{
+  id: 2,
+  nome: "John Doe",
+  email: "john.doe@gmail.com",
+  idade: 30
+},
+{
+  id: 3,
+  nome: "Jane Doe",
+  email: "jane.doe@gmail.com",
+  idade: 31
+}
+*/
+```

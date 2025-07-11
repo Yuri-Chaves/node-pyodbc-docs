@@ -1,0 +1,34 @@
+---
+sidebar_position: 4
+id: sum
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# SUM
+
+Returns the total sum of a numerical column
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const sum = await odbc.aggregate<TUsers, { total: number }>({
+  fn: "SUM",
+  column: "age",
+  table: "users",
+  alias: "total",
+  expression: "* 2", // Multiply 2 times each value
+});
+
+console.log(sum);
+/*
+{
+  total: 180
+}
+*/
+```

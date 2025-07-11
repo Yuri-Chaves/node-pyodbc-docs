@@ -1,0 +1,75 @@
+---
+sidebar_position: 2
+id: insert
+---
+
+import { TypeKey, RequiredIndicator } from "@site/src/components/Tags";
+
+# Insert
+
+The insert function allows you to execute an INSERT statement and return an object containing the status of the operation, a message and some details.
+
+The function accepts the main table type
+
+:::tip[Inserting multiple rows]
+If you want to insert multiple rows, please use the [insertMultiple](./insertMultiple) function instead.
+:::
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const insert = await odbc.insert<TUsers>({
+  table: "users",
+  data: {
+    name: "Billy Nobody",
+    email: "billy.nobody@gmail.com",
+    age: 19,
+  },
+});
+
+console.log(insert);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: INSERT INTO users(name, email, age) VALUES ('Billy Nobody', 'billy.nobody@gmail.com', 19);",
+  details: "1  row(s) affected",
+}
+*/
+```
+
+## Parameters
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be inserted.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>data</RequiredIndicator>
+
+The data to be inserted. If a type is provided, IntelliSense will provide suggestions with the column names.
+
+| Type                      |
+| ------------------------- |
+| <TypeKey>Object</TypeKey> |
+
+### replace
+
+A boolean value that indicates whether the existing data in the table should be replaced.
+
+| Type    | Default |
+| ------- | ------- |
+| boolean | false   |

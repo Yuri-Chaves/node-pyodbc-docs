@@ -1,0 +1,8 @@
+{
+  "label": "DML",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "The library has some functions to perform data manipulation. If you want to perform a more complex query, use the query function"
+  }
+}

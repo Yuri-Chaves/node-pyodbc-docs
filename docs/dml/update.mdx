@@ -1,0 +1,78 @@
+---
+sidebar_position: 4
+id: update
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Update
+
+the update function allows you to execute an UPDATE statement and return an object containing the status of the operation, a message and some details.
+
+The function accepts the main table type
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const update = await odbc.update<TUsers>({
+  table: "users",
+  data: {
+    name: "William Nobody",
+  },
+  where: "name = 'Billy Nobody'",
+});
+
+console.log(update);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: UPDATE users SET name = 'William Nobody' WHERE name = 'Billy Nobody';",
+  details: "1  row(s) affected",
+}
+*/
+```
+
+## Parameters
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be updated.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>data</RequiredIndicator>
+
+The data to be updated. If a type is provided, IntelliSense will provide suggestions with the column names.
+
+| Type                      |
+| ------------------------- |
+| <TypeKey>Object</TypeKey> |
+
+### where
+
+A string that represents the WHERE clause.
+
+| Type   |
+| ------ |
+| string |
+
+:::warning[Caution]
+Updates without a <HighlightKey>WHERE</HighlightKey> clause will affect **ALL** rows in the table.
+:::

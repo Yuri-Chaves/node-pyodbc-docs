@@ -1,0 +1,66 @@
+---
+sidebar_position: 4
+id: delete
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Delete
+
+the delete function allows you to execute a DELETE statement and return an object containing the status of the operation, a message and some details.
+
+the function doesn't accept any type.
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+
+const delete = await odbc.delete({
+  table: "users",
+  where: "name = 'William Nobody'",
+});
+
+console.log(delete);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: DELETE FROM users WHERE name = 'William Nobody';",
+  details: "1  row(s) affected",
+}
+*/
+```
+
+## Parameters
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be deleted.
+
+| Type   |
+| ------ |
+| string |
+
+### where
+
+A string that represents the WHERE clause.
+
+| Type   |
+| ------ |
+| string |
+
+:::warning[Caution]
+Deletes without a <HighlightKey>WHERE</HighlightKey> clause will affect **ALL** rows in the table.
+:::

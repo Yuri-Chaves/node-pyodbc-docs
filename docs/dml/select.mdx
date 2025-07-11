@@ -1,0 +1,137 @@
+---
+sidebar_position: 1
+id: select
+---
+
+import {
+  KeyOfKey,
+  ArrayKey,
+  RequiredIndicator,
+} from "@site/src/components/Tags";
+
+# Select
+
+The select function allows you to execute a SELECT statement and return an object or an array of objects containing the selected data.
+
+The function accepts three types:
+
+- **TableA**: Main table type
+- **TableB**: Join table type
+- **Data**: Result type
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers, TAddresses } from "./types";
+
+type TableA = TUsers;
+type TableB = TAddresses;
+
+type Data = Array<Pick<TableA, "name"> & Pick<TableB, "city" | "state">>;
+
+const data = await odbc.select<TableA, TableB, Data>({
+  columns: ["name"],
+  database: "users",
+  table: "users",
+  join: {
+    table: "addresses",
+    columns: ["city", "state"],
+    on: {
+      columnA: "id",
+      columnB: "user_id",
+    },
+    type: "INNER",
+  },
+  options: {
+    limit: 10,
+    offset: 0,
+    order: {
+      columns: ["users.name"],
+      direction: "ASC",
+    },
+  },
+  where: "users.age >= 30",
+});
+
+console.log(data);
+/*
+[
+ {
+   "name": "Jane Doe",
+   "city": "São Paulo",
+   "state": "SP"
+ },
+ {
+   "name": "John Doe",
+   "city": "Rio de Janeiro",
+   "state": "RJ"
+ }
+]
+*/
+```
+
+## Parameters
+
+### <RequiredIndicator>columns</RequiredIndicator>
+
+An array of strings that represent the columns to be selected. If a type `TableA` is provided, IntelliSense will provide suggestions with the column names.
+
+| Type                                                       |
+| ---------------------------------------------------------- |
+| string \| <ArrayKey><KeyOfKey>TableA</KeyOfKey></ArrayKey> |
+
+:::info Select all columns
+
+If you want to select all columns, you can use the asterisk (\*) symbol.
+
+```ts
+const data = await odbc.select<TableA, TableB, Data>({
+  columns: "*",
+  // ...
+});
+```
+
+:::
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be selected.
+
+| Type   |
+| ------ |
+| string |
+
+### join
+
+An object that represents the join between two tables. Check the [Joining Tables](./join) section for more information.
+
+| Type   |
+| ------ |
+| object |
+
+### where
+
+A string that represents the WHERE clause.
+
+| Type   |
+| ------ |
+| string |
+
+:::warning[Using where with join]
+
+If you use the where property when joining tables, you need to specify the table name in the where clause.
+Example: `users.age >= 30` or `addresses.city = 'São Paulo'`
+:::
+
+### options
+
+An object containing the options for the SELECT statement.

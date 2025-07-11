@@ -1,0 +1,137 @@
+---
+sidebar_position: 1
+id: select
+---
+
+import {
+  KeyOfKey,
+  ArrayKey,
+  RequiredIndicator,
+} from "@site/src/components/Tags";
+
+# Select
+
+A função select permite executar uma instrução SELECT e retornar um objeto ou um array de objetos contendo os dados selecionados.
+
+A função aceita 3 tipos:
+
+- **TabelaA**: Tipo da tabela principal
+- **TabelaB**: Tipo da tabela de junção
+- **Dados**: Tipo dos dados retornados
+
+## Exemplo
+
+```ts
+import { odbc } from "./odbc";
+import { TUsuarios, TEnderecos } from "./types";
+
+type TabelaA = TUsuarios;
+type TabelaB = TEnderecos;
+
+type Dados = Array<Pick<TabelaA, "nome"> & Pick<TabelaB, "cidade" | "estado">>;
+
+const dados = await odbc.select<TabelaA, TabelaB, Dados>({
+  columns: ["nome"],
+  database: "usuarios",
+  table: "usuarios",
+  join: {
+    table: "enderecos",
+    columns: ["cidade", "estado"],
+    on: {
+      columnA: "id",
+      columnB: "id_usuario",
+    },
+    type: "INNER",
+  },
+  options: {
+    limit: 10,
+    offset: 0,
+    order: {
+      columns: ["usuarios.nome"],
+      direction: "ASC",
+    },
+  },
+  where: "usuarios.age >= 30",
+});
+
+console.log(dados);
+/*
+[
+ {
+   "nome": "Jane Doe",
+   "cidade": "São Paulo",
+   "estado": "SP"
+ },
+ {
+   "nome": "John Doe",
+   "cidade": "Rio de Janeiro",
+   "estado": "RJ"
+ }
+]
+*/
+```
+
+## Parâmetros
+
+### <RequiredIndicator>columns</RequiredIndicator>
+
+Um array de strings que representa as colunas a serem selecionadas. Se um tipo `TabelaA` for informado, o IntelliSense fornecerá sugestões com os nomes das colunas.
+
+| Tipo                                                        |
+| ----------------------------------------------------------- |
+| string \| <ArrayKey><KeyOfKey>TabelaA</KeyOfKey></ArrayKey> |
+
+:::info Selecionar todas as colunas
+
+Se você deseja selecionar todas as colunas, você pode usar o símbolo de asterisco (\*).
+
+```ts
+const dados = await odbc.select<TabelaA, TabelaB, Dados>({
+  columns: "*",
+  // ...
+});
+```
+
+:::
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+O nome da tabela a ser consultada.
+
+| Tipo   |
+| ------ |
+| string |
+
+### join
+
+Um objeto que representa a junção entre duas tabelas. Consulte a seção [Junção de Tabelas](./join) para mais informações.
+
+| Tipo   |
+| ------ |
+| objeto |
+
+### where
+
+Uma string que representa a cláusula WHERE.
+
+| Tipo   |
+| ------ |
+| string |
+
+:::warning[Usando where com junção]
+
+Se você usar a propriedade where quando juntar tabelas, você precisa especificar o nome da tabela na cláusula where.
+Exemplo: `usuarios.idade >= 30` ou `enderecos.cidade = 'São Paulo'`
+:::
+
+### options
+
+Um objeto contendo as opções para a instrução SELECT.

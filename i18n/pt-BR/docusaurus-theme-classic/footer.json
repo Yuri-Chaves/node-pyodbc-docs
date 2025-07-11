@@ -1,0 +1,50 @@
+{
+  "link.title.Docs": {
+    "message": "Docs",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Contact": {
+    "message": "Contato",
+    "description": "The title of the footer links column with title=Contact in the footer"
+  },
+  "link.title.More": {
+    "message": "Mais",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.ODBC Client": {
+    "message": "ODBC Client",
+    "description": "The label of footer link with label=ODBC Client linking to /docs/category/client"
+  },
+  "link.item.label.Select": {
+    "message": "Select",
+    "description": "The label of footer link with label=Select linking to /docs/dml/select"
+  },
+  "link.item.label.Insert": {
+    "message": "Insert",
+    "description": "The label of footer link with label=Insert linking to /docs/dml/insert"
+  },
+  "link.item.label.Update": {
+    "message": "Update",
+    "description": "The label of footer link with label=Update linking to /docs/dml/update"
+  },
+  "link.item.label.Delete": {
+    "message": "Delete",
+    "description": "The label of footer link with label=Delete linking to /docs/dml/delete"
+  },
+  "link.item.label.LinkedIn": {
+    "message": "LinkedIn",
+    "description": "The label of footer link with label=LinkedIn linking to https://www.linkedin.com/in/yuri-chaves-330612214/"
+  },
+  "link.item.label.Email": {
+    "message": "Email",
+    "description": "The label of footer link with label=Email linking to mailto:Yuri.Chaves39@hotmail.com"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/Yuri-Chaves"
+  },
+  "copyright": {
+    "message": "Copyright © 2025 Yuri Chaves. Feito com 💚.",
+    "description": "The footer copyright"
+  }
+}

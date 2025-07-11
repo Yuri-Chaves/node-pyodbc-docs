@@ -1,0 +1,8 @@
+{
+  "label": "DML",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "A biblioteca possui algumas funções para manipulação de dados. Caso deseje executar uma consulta mais complexa, utilize a função `query`."
+  }
+}

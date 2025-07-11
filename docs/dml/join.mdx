@@ -1,0 +1,72 @@
+---
+sidebar_position: 7
+id: join
+---
+
+import {
+  KeyOfKey,
+  ArrayKey,
+  RequiredIndicator,
+} from "@site/src/components/Tags";
+
+# Joining Tables
+
+You can join two tables using the join property in the [select](./select) function.
+
+## Parameters
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be joined.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>on</RequiredIndicator>
+
+An object or array that represents the [ON clause](./on).
+
+| Type   |
+| ------ |
+| object |
+
+### columns
+
+An array of strings that represent the columns to be selected. If a type `TableB` is provided, IntelliSense will provide suggestions with the column names.
+
+| Type                                                       |
+| ---------------------------------------------------------- |
+| string \| <ArrayKey><KeyOfKey>TableB</KeyOfKey></ArrayKey> |
+
+:::info Select all columns
+
+If you want to select all columns, you can use the asterisk (\*) symbol.
+
+```ts
+const data = await odbc.select<TableA, TableB, Data>({
+  columns: "*",
+  join: {
+    columns: "*",
+  },
+  // ...
+});
+```
+
+:::
+
+### type
+
+The type of join to be performed.
+
+| Type                   |
+| ---------------------- |
+| INNER \| LEFT \| RIGHT |
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |

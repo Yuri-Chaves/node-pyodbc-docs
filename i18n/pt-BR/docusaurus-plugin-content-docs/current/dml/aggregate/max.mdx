@@ -1,0 +1,32 @@
+---
+sidebar_position: 2
+id: max
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# MAX
+
+Retorna o maior valor dentro da coluna selecionada.
+
+```ts
+import { odbc } from "./odbc";
+import { TUsuarios } from "./types";
+
+const max = await odbc.aggregate<TUsuarios, { maisVelho: number }>({
+  fn: "MAX",
+  column: "idade",
+  table: "usuarios",
+  alias: "maisVelho"
+});
+
+console.log(max);
+/*
+{
+  maisVelho: 31
+}
+```

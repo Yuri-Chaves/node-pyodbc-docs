@@ -1,0 +1,33 @@
+---
+sidebar_position: 5
+id: avg
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# AVG
+
+Returns the average value of a numerical column
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const avg = await odbc.aggregate<TUsers, { average: number }>({
+  fn: "AVG",
+  column: "age",
+  table: "users",
+  alias: "average",
+});
+
+console.log(avg);
+/*
+{
+  average: 30
+}
+*/
+```

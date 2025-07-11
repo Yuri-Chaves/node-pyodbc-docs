@@ -1,0 +1,134 @@
+---
+sidebar_position: 6
+id: insertMultiple
+---
+
+import {
+  ArrayKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Insert Multiple
+
+The `insertMultiple` function allows you to execute an INSERT statement and return an object containing the status of the operation, a message and some details.
+
+The function accepts the main table type
+
+## Example
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const insert = await odbc.insertMultiple<TUsers>({
+  table: "users",
+  data: [
+    {
+      name: "Mr. Nobody",
+      email: "mr.nobody@gmail.com",
+      age: 65,
+    },
+    {
+      name: "Ms. Nobody",
+      email: "ms.nobody@gmail.com",
+      age: 63,
+    },
+  ],
+  model: "UNION_ALL",
+});
+
+console.log(insert);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: INSERT INTO users(name, email, age) SELECT 'Mr. Nobody', 'mr.nobody@gmail.com', 65 UNION ALL SELECT 'Ms. Nobody', 'ms.nobody@gmail.com', 63;",
+  details: "2 row(s) affected",
+}
+*/
+```
+
+## Parameters
+
+### database
+
+The name of the database to be used. If you have set the same database in the explicit config object, you can omit this parameter.
+
+| Type   | Default         |
+| ------ | --------------- |
+| string | Client database |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+The name of the table to be inserted.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>data</RequiredIndicator>
+
+The data to be inserted. If a type is provided, IntelliSense will provide suggestions with the column names.
+
+| Type                        |
+| --------------------------- |
+| <ArrayKey>Object</ArrayKey> |
+
+### replace
+
+A boolean value that indicates whether the existing data in the table should be replaced.
+
+| Type    | Default |
+| ------- | ------- |
+| boolean | false   |
+
+### model
+
+The model to be used when inserting multiple rows.
+
+| Type                                        | Default         |
+| ------------------------------------------- | --------------- |
+| MULTIPLE_VALUES \| SELECT_FROM \| UNION_ALL | MULTIPLE_VALUES |
+
+:::warning[model]
+Make sure your [DBMS](https://www.geeksforgeeks.org/introduction-of-dbms-database-management-system-set-1/) accepts the syntax.
+:::
+:::info[MULTIPLE_VALUES]
+SQL Server 2008 and later based. **limited** to <HighlightKey>1000 records</HighlightKey>
+
+```sql
+INSERT INTO users(name, email, age)
+VALUES
+  ('Mr. Nobody', 'mr.nobody@gmail.com', 65),
+  ('Ms. Nobody', 'ms.nobody@gmail.com', 63);
+```
+
+:::
+:::info[SELECT_FROM]
+`MULTIPLE_VALUES` _workaround_ for more than <HighlightKey>1000 records</HighlightKey>
+
+```sql
+INSERT INTO users(name, email, age)
+SELECT
+  V.name,
+  V.email,
+  V.age
+FROM (
+  VALUES
+    ('Mr. Nobody', 'mr.nobody@gmail.com', 65),
+    ('Ms. Nobody', 'ms.nobody@gmail.com', 63)
+) AS V (name, email, age);
+```
+
+:::
+:::info[UNION_ALL]
+SQL Server 2005 and later based
+
+```sql
+INSERT INTO users(name, email, age)
+SELECT 'Mr. Nobody', 'mr.nobody@gmail.com', 65
+UNION ALL
+SELECT 'Ms. Nobody', 'ms.nobody@gmail.com', 63;
+```
+
+:::

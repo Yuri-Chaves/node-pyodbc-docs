@@ -1,0 +1,122 @@
+---
+sidebar_position: 8
+id: on
+---
+
+import { KeyOfKey, ArrayKey, TypeKey } from "@site/src/components/Tags";
+
+# ON Clause
+
+Defines the join condition between the tables, specifying how the records from one table should relate to those from another.
+
+## Types
+
+### TClauses
+
+Literal type used to indicate how the conditions should be met.
+
+| Type          |
+| ------------- |
+| "AND" \| "OR" |
+
+### TJoinConditions
+
+Object type that represents the join conditions.
+
+|          | Type                                                        | Default |
+| -------- | ----------------------------------------------------------- | ------- |
+| columnA  | string \| <KeyOfKey>TableA</KeyOfKey>                       |         |
+| columnB  | string \| <KeyOfKey>TableB</KeyOfKey>                       |         |
+| operator | "=" \| "&lt;&gt;" \| "&gt;" \| "&gt;=" \| "&lt;" \| "&lt;=" | "="     |
+
+### TJoinOn
+
+| Type                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------- |
+| [<TypeKey>TJoinConditions</TypeKey>](#tjoinconditions)                                                                    |
+| \[[<TypeKey>TClauses</TypeKey>](#tclauses), <ArrayKey>[<TypeKey>TJoinConditions</TypeKey>](#tjoinconditions)</ArrayKey>\] |
+| \[[<TypeKey>TClauses</TypeKey>](#tclauses), <ArrayKey>[<TypeKey>TJoinOn</TypeKey>](#tjoinon)</ArrayKey>\]                 |
+
+## Examples
+
+### Using <TypeKey>TJoinConditions</TypeKey>
+
+> users.id = addresses.user_id
+
+```ts
+const data = await odbc.select<TableA, TableB, Data>({
+  // ...
+  join: {
+    // ...
+    on: {
+      columnA: "id",
+      columnB: "user_id",
+    },
+  },
+});
+```
+
+### Using \[<TypeKey>TClauses</TypeKey>, <ArrayKey><TypeKey>TJoinConditions</TypeKey></ArrayKey>\]
+
+> (users.id &lt;&gt; addresses.user_id) AND (users.id > addresses.user_id)
+
+```ts
+const data = await odbc.select<TableA, TableB, Data>({
+  // ...
+  join: {
+    // ...
+    on: [
+      "AND",
+      [
+        {
+          columnA: "id",
+          columnB: "user_id",
+          operator: "<>",
+        },
+        {
+          columnA: "id",
+          columnB: "user_id",
+          operator: ">",
+        },
+      ],
+    ],
+  },
+});
+```
+
+### Using \[<TypeKey>TClauses</TypeKey>, <ArrayKey><TypeKey>TJoinOn</TypeKey></ArrayKey>\]
+
+> (((users.id &lt;&gt; addresses.user_id) AND (users.id > addresses.user_id)) OR (users.id = addresses.user_id))
+
+```ts
+const data = await odbc.select<TableA, TableB, Data>({
+  // ...
+  join: {
+    // ...
+    on: [
+      "OR",
+      [
+        [
+          "AND",
+          [
+            {
+              columnA: "id",
+              columnB: "user_id",
+              operator: "<>",
+            },
+            {
+              columnA: "id",
+              columnB: "user_id",
+              operator: ">",
+            },
+          ],
+        ],
+        {
+          columnA: "id",
+          columnB: "user_id",
+        },
+      ],
+    ],
+  },
+});
+```

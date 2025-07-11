@@ -1,0 +1,72 @@
+---
+sidebar_position: 7
+id: join
+---
+
+import {
+  KeyOfKey,
+  ArrayKey,
+  RequiredIndicator,
+} from "@site/src/components/Tags";
+
+# Junção de Tabelas
+
+Você pode juntar duas tabelas usando a propriedade join na função [select](./select).
+
+## Parâmetros
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+O nome da tabela a ser consultada.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>on</RequiredIndicator>
+
+Um objeto ou array que representa a cláusula [ON](./on).
+
+| Type   |
+| ------ |
+| object |
+
+### columns
+
+Um array de strings que representa as colunas a serem selecionadas. Se um tipo `TabelaB` for informado, o IntelliSense fornecerá sugestões com os nomes das colunas.
+
+| Type                                                        |
+| ----------------------------------------------------------- |
+| string \| <ArrayKey><KeyOfKey>TabelaB</KeyOfKey></ArrayKey> |
+
+:::info Selecionar todas as colunas
+
+Se você deseja selecionar todas as colunas, você pode usar o símbolo de asterisco (\*).
+
+```ts
+const data = await odbc.select<TabelaA, TabelaB, Dados>({
+  columns: "*",
+  join: {
+    columns: "*",
+  },
+  // ...
+});
+```
+
+:::
+
+### type
+
+O tipo de junção a ser executada.
+
+| Type                   |
+| ---------------------- |
+| INNER \| LEFT \| RIGHT |
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |

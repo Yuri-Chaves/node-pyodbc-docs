@@ -1,0 +1,32 @@
+---
+sidebar_position: 1
+id: min
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# MIN
+
+Returns the smallest value within the selected column
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const min = await odbc.aggregate<TUsers, { youngest: number }>({
+  fn: "MIN",
+  column: "age",
+  table: "users",
+  alias: "youngest"
+});
+
+console.log(min);
+/*
+{
+  youngest: 29
+}
+```

@@ -1,0 +1,103 @@
+import DocCardList from "@theme/DocCardList";
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+  KeyOfKey,
+  ArrayKey,
+} from "@site/src/components/Tags";
+
+# Funções Agregadas
+
+Uma função agregada é uma função que realiza uma cálculo em um conjunto de valores e retorna um único valor.
+
+## Parâmetros
+
+### <RequiredIndicator>fn</RequiredIndicator>
+
+Função agregada a ser executada.
+
+| Tipo                              |
+| --------------------------------- |
+| MIN \| MAX \| COUNT \| SUM \| AVG |
+
+### <RequiredIndicator>column</RequiredIndicator>
+
+Coluna onde a função será executada.
+
+| Tipo                                     |
+| ---------------------------------------- |
+| string \| <KeyOfKey>T</KeyOfKey> \| '\*' |
+
+:::info[Selecionar todas as colunas]
+`'*'` funciona apenas na função <HighlightKey>COUNT</HighlightKey>
+:::
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+Tabela onde a função será executada.
+
+| Tipo   |
+| ------ |
+| string |
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |
+
+### groupBy
+
+Agrupa o conjunto de resultados por uma ou mais colunas.
+
+| Tipo                                                  |
+| ----------------------------------------------------- |
+| <ArrayKey>string \| <KeyOfKey>T</KeyOfKey></ArrayKey> |
+
+### alias
+
+Utilizado para atribuir um nome temporário a uma coluna do conjunto de resultados.
+
+| Tipo   |
+| ------ |
+| string |
+
+### distinct
+
+Um valor booleano que indica se os resultados devem conter valores únicos.
+
+| Tipo    | Padrão |
+| ------- | ------ |
+| boolean | false  |
+
+:::info[DISTINCT]
+A cláusula `DISTINCT` só está disponível na função <HighlightKey>COUNT</HighlightKey>
+:::
+
+### expression
+
+Você pode manipular os valores usando uma expressão.
+
+| Tipo   |
+| ------ |
+| string |
+
+:::info[Expression]
+A cláusula `expression` só está disponível na função <HighlightKey>SUM</HighlightKey>
+:::
+
+### where
+
+Uma string que representa a cláusula WHERE.
+
+| Tipo   |
+| ------ |
+| string |
+
+## Exemplos
+
+<DocCardList />

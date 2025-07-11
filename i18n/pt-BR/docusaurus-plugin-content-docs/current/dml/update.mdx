@@ -1,0 +1,78 @@
+---
+sidebar_position: 4
+id: update
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Update
+
+A função update permite executar uma instrução UPDATE e retornar um objeto contendo o status da operação, uma mensagem e alguns detalhes.
+
+A função aceita o tipo da tabela principal.
+
+## Exemplo
+
+```ts
+import { odbc } from "./odbc";
+import { TUsuarios } from "./types";
+
+const update = await odbc.update<TUsuarios>({
+  table: "usuarios",
+  data: {
+    nome: "José Ninguém",
+  },
+  where: "nome = 'Zé Ninguém'",
+});
+
+console.log(update);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: UPDATE usuarios SET nome = 'José Ninguém' WHERE nome = 'Zé Ninguém';",
+  details: "1  row(s) affected",
+}
+*/
+```
+
+## Parâmetros
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+O nome da tabela a ser consultada.
+
+| Type   |
+| ------ |
+| string |
+
+### <RequiredIndicator>data</RequiredIndicator>
+
+Os dados a serem atualizados. Caso um tipo seja informado, o IntelliSense fornecerá sugestões com os nomes das colunas.
+
+| Type                      |
+| ------------------------- |
+| <TypeKey>Object</TypeKey> |
+
+### where
+
+Uma string que representa a cláusula WHERE.
+
+| Type   |
+| ------ |
+| string |
+
+:::warning[Cuidado]
+Updates sem uma cláusula <HighlightKey>WHERE</HighlightKey> afetarão **TODOS** os registros na tabela.
+:::

@@ -1,0 +1,134 @@
+---
+sidebar_position: 6
+id: insertMultiple
+---
+
+import {
+  ArrayKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# Insert Multiple
+
+A função `insertMultiple` permite executar uma instrução INSERT e retornar um objeto contendo o status da operação, uma mensagem e alguns detalhes.
+
+A função aceita o tipo da tabela principal.
+
+## Exemplo
+
+```ts
+import { odbc } from "./odbc";
+import { TUsuarios } from "./types";
+
+const insert = await odbc.insertMultiple<TUsuarios>({
+  table: "usuarios",
+  data: [
+    {
+      nome: "Sr. Ninguém",
+      email: "sr.ninguem@gmail.com",
+      idade: 65,
+    },
+    {
+      nome: "Sra. Ninguém",
+      email: "sra.ninguem@gmail.com",
+      idade: 63,
+    },
+  ],
+  model: "UNION_ALL",
+});
+
+console.log(insert);
+/*
+{
+  code: SUCCESS,
+  message: "Successfully executed query: INSERT INTO usuarios(nome, email, idade) SELECT 'Sr. Ninguém', 'sr.ninguem@gmail.com', 65 UNION ALL SELECT 'Sra. Ninguém', 'sra.ninguem@gmail.com', 63;",
+  details: "2 row(s) affected",
+}
+*/
+```
+
+## Parâmetros
+
+### database
+
+O nome do banco de dados a ser utilizado. Caso esse banco já tenha sido definido no objeto de configuração explícito, este parâmetro pode ser omitido.
+
+| Tipo   | Padrão             |
+| ------ | ------------------ |
+| string | Database do client |
+
+### <RequiredIndicator>table</RequiredIndicator>
+
+O nome da tabela a ser consultada.
+
+| Tipo   |
+| ------ |
+| string |
+
+### <RequiredIndicator>data</RequiredIndicator>
+
+Os dados a serem inseridos. Caso um tipo seja informado, o IntelliSense fornecerá sugestões com os nomes das colunas.
+
+| Tipo                        |
+| --------------------------- |
+| <ArrayKey>Object</ArrayKey> |
+
+### replace
+
+Um valor booleano que indica se os dados existentes na tabela devem ser substituídos.
+
+| Tipo    | Padrão |
+| ------- | ------ |
+| boolean | false  |
+
+### model
+
+O modelo a ser usado quando inserindo múltiplas linhas.
+
+| Tipo                                        | Padrão          |
+| ------------------------------------------- | --------------- |
+| MULTIPLE_VALUES \| SELECT_FROM \| UNION_ALL | MULTIPLE_VALUES |
+
+:::warning[model]
+Certifique-se que seu [DBMS](https://www.geeksforgeeks.org/introduction-of-dbms-database-management-system-set-1/) aceita a sintaxe.
+:::
+:::info[MULTIPLE_VALUES]
+SQL Server 2008 e posteriores. **limitado** a <HighlightKey>1000 registros</HighlightKey>
+
+```sql
+INSERT INTO usuarios(nome, email, idade)
+VALUES
+  ('Sr. Ninguém', 'sr.ninguem@gmail.com', 65),
+  ('Sra. Ninguém', 'sra.ninguem@gmail.com', 63);
+```
+
+:::
+:::info[SELECT_FROM]
+`MULTIPLE_VALUES` _workaround_ para mais de <HighlightKey>1000 registros</HighlightKey>
+
+```sql
+INSERT INTO usuarios(nome, email, idade)
+SELECT
+  V.nome,
+  V.email,
+  V.idade
+FROM (
+  VALUES
+    ('Sr. Ninguém', 'sr.ninguem@gmail.com', 65),
+    ('Sra. Ninguém', 'sra.ninguem@gmail.com', 63)
+) AS V (nome, email, idade);
+```
+
+:::
+:::info[UNION_ALL]
+SQL Server 2005 e posteriores
+
+```sql
+INSERT INTO usuarios(nome, email, idade)
+SELECT 'Sr. Ninguém', 'sr.ninguem@gmail.com', 65
+UNION ALL
+SELECT 'Sra. Ninguém', 'sra.ninguem@gmail.com', 63;
+```
+
+:::

@@ -1,0 +1,48 @@
+---
+sidebar_position: 3
+id: count
+---
+
+import {
+  TypeKey,
+  RequiredIndicator,
+  HighlightKey,
+} from "@site/src/components/Tags";
+
+# COUNT
+
+Returns the number of rows in a set
+
+```ts
+import { odbc } from "./odbc";
+import { TUsers } from "./types";
+
+const count = await odbc.aggregate<TUsers, Array<TUsers>>({
+  fn: "COUNT",
+  column: "*",
+  table: "users",
+  distinct: true,
+});
+
+console.log(count);
+/*
+{
+  id: 1,
+  name: "Yuri Chaves",
+  email: "yuri.chaves39@hotmail.com",
+  age: 29
+},
+{
+  id: 2,
+  name: "John Doe",
+  email: "john.doe@gmail.com",
+  age: 30
+},
+{
+  id: 3,
+  name: "Jane Doe",
+  email: "jane.doe@gmail.com",
+  age: 31
+}
+*/
+```
