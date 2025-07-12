@@ -9,10 +9,10 @@ const config: Config = {
   future: {
     v4: true,
   },
-  url: "https://your-docusaurus-site.example.com",
-  baseUrl: "/",
+  url: "https://Yuri-Chaves.github.io",
+  baseUrl: "/node-pyodbc-docs/",
   organizationName: "Yuri-Chaves",
-  projectName: "node-pyodbc",
+  projectName: "node-pyodbc-docs",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
